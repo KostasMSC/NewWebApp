@@ -8,8 +8,8 @@
 
 				try {
 					// obtain a connection to the DB, use DB driver, URL, credentials
-					String connURL = "jdbc:mysql://localhost:3306/page_visits";
-					Class.forName("com.mysql.cj.jdbc.Driver").newInstance();
+					String connURL = "jdbc:mysql://localhost:3306/PAGE_VISITS";
+					Class.forName("com.mysql.jdbc.Driver").newInstance();
 					conn = DriverManager.getConnection(connURL, "exercise1", "exEr(1se$");
 
 					Statement stmt0 = conn.createStatement();
@@ -23,12 +23,12 @@
 					stmt0.close();
 					conn.close();
 				} catch (SQLException e) {
-					e.printStackTrace();
+					out.println("SQLException: " + e.getMessage());
 				} catch (InstantiationException e) {
-					e.printStackTrace();
+					out.println("InstantiationException: " + e.getMessage());
 				} catch (IllegalAccessException e) {
-					e.printStackTrace();
+					out.println("IllegalAccessException: " + e.getMessage());
 				} catch (ClassNotFoundException e) {
-					e.printStackTrace();
+					out.println("ClassNotFoundException: " + e.getMessage());
 				}
 			%>
