@@ -30,6 +30,7 @@
         <li><a href="Square.jsp">Square<a></li>
         <li><a href="Pentagon.jsp">Pentagon</a></li>
         <li><a href="Hexagon.jsp">Hexagon</a></li>
+        <li><a href="Rhombus.jsp">Rhombus</a></li>
     </ol>
     <br>
 	<br>
