@@ -11,7 +11,7 @@
 	<h1>Hello!</h1>
 
 	<p>
-	<p>This is a <font color="green">Green Rhombus</font>.
+	<p>This is a <font color="red"><strike>Green</strike>Red Rhombus</font>.
 	<p>
 	<p>
 	<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg">
