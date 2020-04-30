@@ -17,7 +17,7 @@
 	<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg">
   		<polygon 
   			points="100,0 200,50 100,100 0,50" 
-  			style="fill:green;stroke:black;stroke-width:1" 
+  			style="fill:red;stroke:black;stroke-width:1" 
   		/>
 	</svg>
 </font>
