@@ -18,6 +18,9 @@
 		<polygon points="25,0 0,100 200,100 175,0"
 			style="fill:red;stroke:black;stroke-width:1" />
 	</svg>
+	<jsp:include page='InsertShapes.jsp'>
+	    <jsp:param name="shapeName" value="<%=this.getClass().getSimpleName().replaceFirst(\"_jsp\", \"\")%>" />
+	</jsp:include>
 </font>
 </body>
 </html>

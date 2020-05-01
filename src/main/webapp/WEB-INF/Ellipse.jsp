@@ -18,6 +18,9 @@
   		<ellipse cx="100" cy="50" rx="100" ry="50"
   			style="fill:red;stroke:black;stroke-width:1" />
 	</svg>
+	<jsp:include page='InsertShapes.jsp'>
+	    <jsp:param name="shapeName" value="<%=this.getClass().getSimpleName().replaceFirst(\"_jsp\", \"\")%>" />
+	</jsp:include>
 </font>
 </body>
 </html>
