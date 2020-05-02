@@ -35,7 +35,7 @@ pipeline {
 		}
 		stage('Remove Unused docker image') {
 		  steps{
-		    bat label: '', script: "docker rmi -f $registry:$BUILD_NUMBER"
+		    bat label: '', script: "docker rmi -f $registry:1.$BUILD_NUMBER"
 		  }
 		}
 		stage('Remove Containers') {
