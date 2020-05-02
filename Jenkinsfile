@@ -16,6 +16,7 @@ pipeline {
             steps {
                 echo "Successful build.";
                 sh 'mvn -v';
+                cat pom.xml;
             }
         }
     }
