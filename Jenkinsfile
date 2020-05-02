@@ -38,6 +38,11 @@ pipeline {
 		    bat label: '', script: "docker rmi -f $registry:$BUILD_NUMBER"
 		  }
 		}
+		stage('Remove Containers') {
+		  steps{
+		    bat label: '', script: "docker container prune -f"
+		  }
+		}
 		stage('Deploy docker image') {
 		  steps{
 		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$BUILD_NUMBER"
