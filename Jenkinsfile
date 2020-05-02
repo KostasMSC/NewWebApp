@@ -15,8 +15,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Successful build.";
-                sh 'mvn -v';
-                sh 'cat pom.xml';
+                sh 'mvn package';
             }
         }
     }
