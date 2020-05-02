@@ -41,7 +41,7 @@ pipeline {
 		}
 		stage('Deploy docker image') {
 		  steps{
-		    bat label: '', script: "docker run -d --name tomcat_app -p 8888:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
+		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
 		stage('Running Mysql') {
