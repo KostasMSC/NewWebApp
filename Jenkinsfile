@@ -1,4 +1,9 @@
 pipeline {
+	environment {
+		registry = "kargyris/mytomcat"
+		registryCredential = 'dockerhub'
+		dockerImage = ''
+	}
     agent any
     stages {
         stage ('Git-checkout') {
@@ -12,17 +17,27 @@ pipeline {
                 bat label: '', script: 'C:/Users/argyris/Projects/devtools/apache-maven-3.6.2/bin/mvn package';
             }
         }
-        stage('Image') {
-            steps {
-                echo "Creating Docker Image for Tomcat.";
-                bat label: '', script: 'docker build -t mytomcat:1.0 -f Dockerfile1 .';
-            }
-        }
-        stage('Deploy') {
-            steps {
-                echo "Successful deployment.";
-            }
-        }
+		stage('Building image') {
+		  steps{
+		    script {
+		      dockerImage = docker.build registry + ":$BUILD_NUMBER"
+		    }
+		  }
+		}
+		stage('Deploy Image') {
+		  steps{
+		     script {
+		        docker.withRegistry( '', registryCredential ) {
+		        dockerImage.push()
+		      }
+		    }
+		  }
+		}
+		stage('Remove Unused docker image') {
+		  steps{
+		    bat label: '', script: "docker rmi $registry:$BUILD_NUMBER"
+		  }
+		}
     }
     post {
         always {
