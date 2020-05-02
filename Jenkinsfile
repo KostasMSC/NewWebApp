@@ -12,37 +12,6 @@ pipeline {
                 echo "Checking out from git repository.";
             }
         }
-		stage('Building image') {
-		  steps{
-		    script {
-		      dockerImage = docker.build registry + ":$versionNumber.$BUILD_NUMBER"
-		    }
-		  }
-		}
-		stage('Deploy Image') {
-		  steps{
-		     script {
-		        docker.withRegistry( '', registryCredential ) {
-		        dockerImage.push()
-		      }
-		    }
-		  }
-		}
-		stage('Remove Unused docker image') {
-		  steps{
-		    sh "sudo docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
-		  }
-		}
-		stage('Deploy docker image') {
-		  steps{
-		    sh "sudo docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
-		  }
-		}
-		stage('Running Mysql') {
-		  steps{
-		    sh "sudo docker-compose up -d"
-		  }
-		}
     }
     post {
         always {
