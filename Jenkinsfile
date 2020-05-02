@@ -2,6 +2,7 @@ pipeline {
 	environment {
 		registry = "kargyris/mytomcat"
 		registryCredential = 'dockerhub'
+		versionNumber = 1
 		dockerImage = ''
 	}
     agent any
@@ -20,7 +21,7 @@ pipeline {
 		stage('Building image') {
 		  steps{
 		    script {
-		      dockerImage = docker.build registry + ":1.$BUILD_NUMBER"
+		      dockerImage = docker.build registry + ":$versionNumber.$BUILD_NUMBER"
 		    }
 		  }
 		}
@@ -35,12 +36,12 @@ pipeline {
 		}
 		stage('Remove Unused docker image') {
 		  steps{
-		    bat label: '', script: "docker rmi -f $registry:1.$BUILD_NUMBER"
+		    bat label: '', script: "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
 		stage('Deploy docker image') {
 		  steps{
-		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$BUILD_NUMBER --name tomcat"
+		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER --name tomcat"
 		  }
 		}
 		stage('Running Mysql') {
