@@ -40,12 +40,13 @@ pipeline {
 		}
 		stage('Remove Containers') {
 		  steps{
-		    bat label: '', script: "docker container prune -f"
+		    bat label: '', script: "docker stop $(docker ps -a -q)";
+		    bat label: '', script: "docker rm $(docker ps -a -q)";
 		  }
 		}
 		stage('Deploy docker image') {
 		  steps{
-		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$BUILD_NUMBER"
+		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$BUILD_NUMBER --name tomcat"
 		  }
 		}
 		stage('Running Mysql') {
