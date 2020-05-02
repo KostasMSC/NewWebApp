@@ -2,7 +2,7 @@ pipeline {
 	environment {
 		registry = "kargyris/mytomcat"
 		registryCredential = 'dockerhub'
-		versionNumber = 1
+		versionNumber = 2
 		dockerImage = ''
 	}
     agent any
@@ -10,12 +10,6 @@ pipeline {
         stage ('Git-checkout') {
             steps {
                 echo "Checking out from git repository.";
-            }
-        }
-        stage('Remove Containers') {
-            steps {
-                powershell label: '', script: 'docker stop $(docker ps -a -q)';
-                powershell label: '', script: 'docker rm $(docker ps -a -q)';
             }
         }
 		stage('Building image') {
@@ -36,17 +30,17 @@ pipeline {
 		}
 		stage('Remove Unused docker image') {
 		  steps{
-		    powershell label: '', script: "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
+		    sh "sudo docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
 		stage('Deploy docker image') {
 		  steps{
-		    powershell label: '', script: "docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
+		    sh "sudo docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
 		stage('Running Mysql') {
 		  steps{
-		    powershell label: '', script: "docker-compose up -d"
+		    sh "sudo docker-compose up -d"
 		  }
 		}
     }
