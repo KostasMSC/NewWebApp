@@ -2,7 +2,7 @@ pipeline {
 	environment {
 		registry = "kargyris/mytomcat"
 		registryCredential = 'dockerhub'
-		versionNumber = 2
+		versionNumber = 1
 		dockerImage = ''
 	}
     agent any
@@ -12,12 +12,49 @@ pipeline {
                 echo "Checking out from git repository.";
             }
         }
+        stage('Remove Containers') {
+            steps {
+                powershell label: '', script: 'docker stop $(docker ps -a -q)';
+                powershell label: '', script: 'docker rm $(docker ps -a -q)';
+            }
+        }
         stage('Build') {
             steps {
                 echo "Successful build.";
-                sh 'mvn package';
+                bat label: '', script: 'C:/Users/argyris/Projects/devtools/apache-maven-3.6.2/bin/mvn package';
             }
         }
+		stage('Building image') {
+		  steps{
+		    script {
+		      dockerImage = docker.build registry + ":$versionNumber.$BUILD_NUMBER"
+		    }
+		  }
+		}
+		stage('Deploy Image') {
+		  steps{
+		     script {
+		        docker.withRegistry( '', registryCredential ) {
+		        dockerImage.push()
+		      }
+		    }
+		  }
+		}
+		stage('Remove Unused docker image') {
+		  steps{
+		    powershell label: '', script: "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
+		  }
+		}
+		stage('Deploy docker image') {
+		  steps{
+		    powershell label: '', script: "docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
+		  }
+		}
+		stage('Running Mysql') {
+		  steps{
+		    powershell label: '', script: "docker-compose up -d"
+		  }
+		}
     }
     post {
         always {
