@@ -14,8 +14,8 @@ pipeline {
         }
         stage('Remove Containers') {
             steps {
-                sh 'docker stop $(sudo docker ps -a -q)';
-                sh 'docker rm $(sudo docker ps -a -q)';
+                sh 'docker stop $(docker ps -a -q)';
+                sh 'docker rm $(docker ps -a -q)';
             }
         }
 		stage('Building image') {
