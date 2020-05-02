@@ -46,7 +46,7 @@ pipeline {
 		}
 		stage('Running Mysql') {
 		  steps{
-		    bat label: '', script: "docker-compose up"
+		    bat label: '', script: "docker-compose up -d"
 		  }
 		}
     }
