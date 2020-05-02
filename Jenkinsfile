@@ -18,12 +18,6 @@ pipeline {
                 powershell label: '', script: 'docker rm $(docker ps -a -q)';
             }
         }
-        stage('Build') {
-            steps {
-                echo "Successful build.";
-                bat label: '', script: 'C:/Users/argyris/Projects/devtools/apache-maven-3.6.2/bin/mvn package';
-            }
-        }
 		stage('Building image') {
 		  steps{
 		    script {
