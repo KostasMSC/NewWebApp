@@ -25,7 +25,7 @@ pipeline {
 		    }
 		  }
 		}
-		stage('Deploy Image') {
+		stage('Push Image to Dockerhub') {
 		  steps{
 		     script {
 		        docker.withRegistry( '', registryCredential ) {
@@ -39,7 +39,7 @@ pipeline {
 		    sh "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
-		stage('Deploy docker image') {
+		stage('Deploy docker image from Dockerhub') {
 		  steps{
 		    sh "docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
 		  }
