@@ -15,7 +15,7 @@ pipeline {
         stage('Image') {
             steps {
                 echo "Creating Docker Image for Tomcat.";
-                bat label: '', script: 'docker build t mytomcat:1.0 f Dockerfile1 .';
+                bat label: '', script: 'docker build -t mytomcat:1.0 -f Dockerfile1 .';
             }
         }
         stage('Deploy') {
