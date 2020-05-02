@@ -12,6 +12,12 @@ pipeline {
                 echo "Checking out from git repository.";
             }
         }
+        stage('Remove Containers') {
+            steps {
+                sh 'docker stop $(sudo docker ps -a -q)';
+                sh 'docker rm $(sudo docker ps -a -q)';
+            }
+        }
 		stage('Building image') {
 		  steps{
 		    script {
