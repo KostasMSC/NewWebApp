@@ -9,6 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Successful build.";
+                bat label: '', script: 'mvn package';
             }
         }
         stage('Test') {
