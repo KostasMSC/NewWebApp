@@ -12,14 +12,9 @@ pipeline {
                 bat label: '', script: 'C:/Users/argyris/Projects/devtools/apache-maven-3.6.2/bin/mvn package';
             }
         }
-        stage('Test') {
+        stage('Image') {
             steps {
                 echo "JUnit tests passed successfully.";
-            }
-        }
-        stage('QualityGate') {
-            steps {
-                echo "SonarQube Quality Gate passed successfully.";
             }
         }
         stage('Deploy') {
