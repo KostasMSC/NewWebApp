@@ -12,13 +12,6 @@ pipeline {
                 echo "Checking out from git repository.";
             }
         }
-		stage('Building image') {
-		  steps{
-		    script {
-		      dockerImage = docker.build registry + ":$versionNumber.$BUILD_NUMBER"
-		    }
-		  }
-		}
     }
     post {
         always {
