@@ -40,7 +40,7 @@ pipeline {
 		}
 		stage('Deploy docker image') {
 		  steps{
-		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat"
+		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$BUILD_NUMBER"
 		  }
 		}
     }
