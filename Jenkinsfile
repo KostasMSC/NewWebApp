@@ -43,6 +43,11 @@ pipeline {
 		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$BUILD_NUMBER"
 		  }
 		}
+		stage('Running Mysql') {
+		  steps{
+		    bat label: '', script: "docker-compose up"
+		  }
+		}
     }
     post {
         always {
