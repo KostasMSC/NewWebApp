@@ -21,7 +21,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Successful build.";
-                powershell label: '', script: 'C:/Users/argyris/Projects/devtools/apache-maven-3.6.2/bin/mvn package';
+                powershell label: '', script: 'mvn package';
             }
         }
 		stage('Building image') {
