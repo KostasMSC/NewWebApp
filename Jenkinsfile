@@ -12,6 +12,11 @@ pipeline {
                 echo "Checking out from git repository.";
             }
         }
+        stage('Remove Containers') {
+            steps {
+                bat label: '', script: 'docker stop $(docker ps -a -q)';
+            }
+        }
         stage('Build') {
             steps {
                 echo "Successful build.";
