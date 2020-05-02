@@ -9,7 +9,7 @@ pipeline {
         stage('Build') {
             steps {
                 echo "Successful build.";
-                bat label: '', script: 'C:\Users\argyris\Projects\devtools\apache-maven-3.6.2\bin\mvn package';
+                bat label: '', script: 'C:/Users/argyris/Projects/devtools/apache-maven-3.6.2/bin/mvn package';
             }
         }
         stage('Test') {
