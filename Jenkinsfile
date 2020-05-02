@@ -14,7 +14,8 @@ pipeline {
         }
         stage('Image') {
             steps {
-                echo "JUnit tests passed successfully.";
+                echo "Creating Docker Image for Tomcat.";
+                bat label: '', script: 'docker build t mytomcat:1.0 f Dockerfile1 .';
             }
         }
         stage('Deploy') {
