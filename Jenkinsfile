@@ -28,6 +28,11 @@ pipeline {
 		    }
 		  }
 		}
+		stage('Remove Unused docker image') {
+		  steps{
+		    sh "sudo docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
+		  }
+		}
 		stage('Deploy docker image') {
 		  steps{
 		    sh "sudo docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
