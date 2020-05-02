@@ -40,8 +40,8 @@ pipeline {
 		}
 		stage('Remove Containers') {
 		  steps{
-		    bat label: '', script: "docker stop $(docker ps -a -q)";
-		    bat label: '', script: "docker rm $(docker ps -a -q)";
+		    bat label: '', script: 'docker stop $(docker ps -a -q)';
+		    bat label: '', script: 'docker rm $(docker ps -a -q)';
 		  }
 		}
 		stage('Deploy docker image') {
