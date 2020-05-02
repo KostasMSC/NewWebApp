@@ -14,8 +14,8 @@ pipeline {
         }
         stage('Remove Containers') {
             steps {
-                sh 'docker stop $(docker ps -a -q)';
-                sh 'docker rm $(docker ps -a -q)';
+                sh 'sudo docker stop $(docker ps -a -q)';
+                sh 'sudo docker rm $(docker ps -a -q)';
             }
         }
         stage('Build') {
@@ -42,17 +42,17 @@ pipeline {
 		}
 		stage('Remove Unused docker image') {
 		  steps{
-		    sh "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
+		    sh "sudo docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
 		stage('Deploy docker image') {
 		  steps{
-		    sh "docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
+		    sh "sudo docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
 		stage('Running Mysql') {
 		  steps{
-		    sh "docker-compose up -d"
+		    sh "sudo docker-compose up -d"
 		  }
 		}
     }
