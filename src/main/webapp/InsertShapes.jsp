@@ -6,6 +6,7 @@
 
 				Connection conn;
 
+			
 				try {
 					// obtain a connection to the DB, use DB driver, URL, credentials
 					String connURL = "jdbc:mysql://localhost:3306/PAGE_VISITS";
