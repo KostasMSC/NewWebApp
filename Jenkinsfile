@@ -12,6 +12,12 @@ pipeline {
                 echo "Checking out from git repository.";
             }
         }
+        stage('Build') {
+            steps {
+                echo "Successful build.";
+                sh 'mvn package';
+            }
+        }
     }
     post {
         always {
