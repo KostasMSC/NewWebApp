@@ -35,7 +35,12 @@ pipeline {
 		}
 		stage('Remove Unused docker image') {
 		  steps{
-		    bat label: '', script: "docker rmi $registry:$BUILD_NUMBER"
+		    bat label: '', script: "docker rmi -f $registry:$BUILD_NUMBER"
+		  }
+		}
+		stage('Deploy docker image') {
+		  steps{
+		    bat label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat"
 		  }
 		}
     }
