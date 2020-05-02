@@ -47,7 +47,7 @@ pipeline {
 		}
 		stage('Deploy docker image') {
 		  steps{
-		    powershell label: '', script: "docker run -d -p 8888:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
+		    powershell label: '', script: "docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
 		stage('Running Mysql') {
