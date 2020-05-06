@@ -1,9 +1,3 @@
-FROM maven:3.6.3 AS MAVEN_TOOL_CHAIN
-COPY pom.xml /tmp/
-COPY src /tmp/src/
-WORKDIR /tmp/
-RUN mvn package
-
 FROM ubuntu:18.04
 
 RUN apt-get -y update
@@ -31,4 +25,4 @@ CMD exec ${TARGETD}/bin/catalina.sh run
 
 ENV WAR NewWebApp.war
 
-COPY --from=MAVEN_TOOL_CHAIN /tmp/target/${WAR} ${TARGETD}/webapps/
+ADD /target/${WAR} ${TARGETD}/webapps/
