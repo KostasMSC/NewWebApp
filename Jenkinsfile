@@ -17,7 +17,11 @@ pipeline {
                 sh '/opt/apache-maven-3.6.3/bin/mvn package';
             }
         }
-
+        stage('Remove Containers, Images etc') {
+            steps {
+                sh 'docker system prune -a -f';
+            }
+        }
 		stage('Building image') {
 		  steps{
 		    script {
