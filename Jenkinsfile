@@ -17,12 +17,7 @@ pipeline {
                 sh '/opt/apache-maven-3.6.3/bin/mvn package';
             }
         }
-        stage('Remove Containers') {
-            steps {
-                sh 'docker stop $(docker ps -a -q)';
-                sh 'docker rm $(docker ps -a -q)';
-            }
-        }
+
 		stage('Building image') {
 		  steps{
 		    script {
