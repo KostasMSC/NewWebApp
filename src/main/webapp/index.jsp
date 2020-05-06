@@ -32,6 +32,7 @@
         <li><a href="Hexagon.jsp">Hexagon</a></li>
         <li><a href="Rhombus.jsp">Rhombus</a></li>
         <li><a href="ResetStatistics.jsp">Reset Statistics</a></li>
+        <li><a href="ViewStatistics.jsp">View Statistics</a></li>
     </ol>
     <br>
 	<br>
