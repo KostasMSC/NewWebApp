@@ -14,9 +14,46 @@ pipeline {
         }
         stage('Maven Build') {
             steps {
-                sh 'mvn package';
+                sh '/opt/apache-maven-3.6.3/bin/mvn package';
             }
         }
+        stage('Remove Containers') {
+            steps {
+                sh 'docker stop $(docker ps -a -q)';
+                sh 'docker rm $(docker ps -a -q)';
+            }
+        }
+		stage('Building image') {
+		  steps{
+		    script {
+		      dockerImage = docker.build registry + ":$versionNumber.$BUILD_NUMBER"
+		    }
+		  }
+		}
+		stage('Push Image to Dockerhub') {
+		  steps{
+		     script {
+		        docker.withRegistry( '', registryCredential ) {
+		        dockerImage.push()
+		      }
+		    }
+		  }
+		}
+		stage('Remove Unused docker image') {
+		  steps{
+		    sh "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
+		  }
+		}
+		stage('Deploy docker image from Dockerhub') {
+		  steps{
+		    sh "docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
+		  }
+		}
+		stage('Running Mysql') {
+		  steps{
+		    sh "docker-compose up -d"
+		  }
+		}
     }
     post {
         always {
