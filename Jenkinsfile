@@ -43,6 +43,16 @@ pipeline {
 		    sh "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
+		stage('Deploy docker image from Dockerhub') {
+		  steps{
+		    sh "docker run -d -p 8088:8080 kargyris/mytomcat:$versionNumber.$BUILD_NUMBER"
+		  }
+		}
+		stage('Running Mysql') {
+		  steps{
+		    sh "docker-compose up -d"
+		  }
+		}
     }
     post {
         always {
