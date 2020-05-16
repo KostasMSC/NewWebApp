@@ -19,7 +19,6 @@ pipeline {
         }
         stage('Remove Containers, Images etc') {
             steps {
-            	sh "docker rm -f $(docker ps -a -q)";
                 sh 'docker system prune -a -f';
             }
         }
