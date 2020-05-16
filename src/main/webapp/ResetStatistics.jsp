@@ -9,7 +9,7 @@
 </head>
 <body>
 	<%
-out.println("You can view REset Statistics here!");
+out.println("Your Statistics are reset to zero!");
 
 Connection conn;
 
