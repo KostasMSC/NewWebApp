@@ -43,7 +43,6 @@ pipeline {
 		    sh "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
-
     }
     post {
         always {
