@@ -7,9 +7,9 @@ RUN apt-get -y install wget
 
 WORKDIR /opt
 
-ENV DLLINK downloads.apache.org/tomcat/tomcat-9/v9.0.33/bin
+ENV DLLINK https://downloads.apache.org/tomcat/tomcat-9/v9.0.35/bin
 
-ENV TOMCAT apache-tomcat-9.0.33
+ENV TOMCAT apache-tomcat-9.0.35
 
 ENV TOMCATZ ${TOMCAT}.tar.gz
 
