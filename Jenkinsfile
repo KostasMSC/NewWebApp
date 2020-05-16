@@ -19,6 +19,7 @@ pipeline {
         }
         stage('Remove Containers, Images etc') {
             steps {
+            	sh 'docker rm -f $(docker ps -a -q)';
                 sh 'docker system prune -a -f';
             }
         }
@@ -43,6 +44,7 @@ pipeline {
 		    sh "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
+
     }
     post {
         always {
