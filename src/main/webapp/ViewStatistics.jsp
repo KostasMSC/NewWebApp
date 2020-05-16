@@ -13,6 +13,7 @@
 Connection conn;
 
 try {
+	
 	// obtain a connection to the DB, use DB driver, URL, credentials
 	String connURL = "jdbc:mysql://172.19.0.1:3308/PAGE_VISITS";
 	Class.forName("com.mysql.jdbc.Driver").newInstance();
