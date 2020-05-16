@@ -53,7 +53,7 @@ pipeline {
 		}
 		stage('Running Mysql To Production Server') {
 		  steps{
-		    sh "ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@ec2-15-161-61-125.eu-south-1.compute.amazonaws.com \'sudo docker-compose up -d\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@ec2-15-161-61-125.eu-south-1.compute.amazonaws.com \'sudo docker-compose up -d\'"
 		  }
 		}
     }
