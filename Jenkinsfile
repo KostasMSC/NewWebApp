@@ -44,16 +44,16 @@ pipeline {
 		    sh "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
-		stage('Running Mysql To Production Server') {
+		stage('Deploy docker image from Dockerhub To Production Server') {
 		  steps{
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@ec2-15-161-61-125.eu-south-1.compute.amazonaws.com \'sudo docker stop \$(sudo docker ps -a -q) || true && sudo docker rm \$(sudo docker ps -a -q) || true\'"
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@ec2-15-161-61-125.eu-south-1.compute.amazonaws.com \'sudo docker system prune -a -f\'"
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@ec2-15-161-61-125.eu-south-1.compute.amazonaws.com \'sudo docker-compose up -d\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@ec2-15-161-61-125.eu-south-1.compute.amazonaws.com \'sudo docker run -d -p 8088:8080 $registry:$versionNumber.$BUILD_NUMBER\'"
 		  }
 		}
-		stage('Deploy docker image from Dockerhub To Production Server') {
+		stage('Running Mysql To Production Server') {
 		  steps{
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@ec2-15-161-61-125.eu-south-1.compute.amazonaws.com \'sudo docker run -d -p 8088:8080 $registry:$versionNumber.$BUILD_NUMBER\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@ec2-15-161-61-125.eu-south-1.compute.amazonaws.com \'sudo docker-compose up -d\'"
 		  }
 		}
     }
