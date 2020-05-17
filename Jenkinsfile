@@ -20,10 +20,15 @@ pipeline {
                 sh '/opt/apache-maven-3.6.3/bin/mvn package';
             }
         }
-		stage('Building Mysql image') {
+        stage('Remove Containers, Images etc') {
+            steps {
+                sh 'docker system prune -a -f';
+            }
+        }
+		stage('Building Tomcat image') {
 		  steps{
 		    script {
-		      dockerMysqlImage = docker.build(mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql .")
+		      dockerTomcatImage = docker.build tomcatImage + ":$versionNumber.$BUILD_NUMBER"
 		    }
 		  }
 		}
@@ -31,14 +36,26 @@ pipeline {
 		  steps{
 		     script {
 		        docker.withRegistry( '', registryCredential ) {
-		        dockerMysqlImage.push()
+		        dockerTomcatImage.push()
 		      }
 		    }
 		  }
 		}
 		stage('Remove Unused Tomcat image') {
 		  steps{
-		    sh "docker rmi -f $mysqlImage:$versionNumber.$BUILD_NUMBER"
+		    sh "docker rmi -f $tomcatImage:$versionNumber.$BUILD_NUMBER"
+		  }
+		}
+		stage('Deploy docker image from Dockerhub To Production Server') {
+		  steps{
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker stop \$(sudo docker ps -a -q) || true && sudo docker rm \$(sudo docker ps -a -q) || true\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker system prune -a -f\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run -d -p 8088:8080 $tomcatImage:$versionNumber.$BUILD_NUMBER\'"
+		  }
+		}
+		stage('Running Mysql To Production Server') {
+		  steps{
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker-compose up -d\'"
 		  }
 		}
     }
