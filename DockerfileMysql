@@ -5,6 +5,7 @@ RUN apt-get -y upgrade
 RUN apt-get install -y mysql-server
 
 COPY ./mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+COPY ./mysqld.cnf /etc/mysql/mysql.cnf
 
 # It doesn't seem needed since I'll use -p, but it can't hurt
 EXPOSE 3306
