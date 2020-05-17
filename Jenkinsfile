@@ -71,7 +71,9 @@ pipeline {
 		}
 		stage('Running Mysql To Production Server') {
 		  steps{
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run -d -p 3308:3306 $mysqlImage:$versionNumber.$BUILD_NUMBER\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker network rm mynet123\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker network create --subnet=172.22.0.0/16 mynet123\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run --net mynet123 --ip 172.22.0.22 -d -p 3308:3306 $mysqlImage:$versionNumber.$BUILD_NUMBER\'"
 		  }
 		}
     }
