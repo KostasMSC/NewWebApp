@@ -49,7 +49,7 @@ pipeline {
 		stage('Deploy docker image from Dockerhub To Production Server') {
 		  steps{
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker stop \$(sudo docker ps -a -q) || true && sudo docker rm \$(sudo docker ps -a -q) || true\'"
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker rmi \$(sudo docker images | grep mytomcat | tr -s ' ' | cut -d ' ' -f 3)\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker rmi \$(sudo docker images | grep mytomcat | tr -s \' \' | cut -d \' \' -f 3)\'"
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run -d -p 8088:8080 $tomcatImage:$versionNumber.$BUILD_NUMBER\'"
 		  }
 		}
