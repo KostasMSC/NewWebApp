@@ -41,31 +41,9 @@ pipeline {
 		    sh "docker rmi -f $tomcatImage:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
-		stage('Building Mysql image') {
-		  steps{
-		    script {
-		      dockerMysqlImage = docker.build(mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql .")
-		    }
-		  }
-		}
-		stage('Push Mysql Image to Dockerhub') {
-		  steps{
-		     script {
-		        docker.withRegistry( '', registryCredential ) {
-		        dockerMysqlImage.push()
-		      }
-		    }
-		  }
-		}
-		stage('Remove Unused Mysql image') {
-		  steps{
-		    sh "docker rmi -f $mysqlImage:$versionNumber.$BUILD_NUMBER"
-		  }
-		}
 		stage('Deploy docker image from Dockerhub To Production Server') {
 		  steps{
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker stop \$(sudo docker ps -a -q) || true && sudo docker rm \$(sudo docker ps -a -q) || true\'"
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker system prune -a -f\'"
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run -d -p 8088:8080 $tomcatImage:$versionNumber.$BUILD_NUMBER\'"
 		  }
 		}
@@ -73,7 +51,8 @@ pipeline {
 		  steps{
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker network rm mynet123\'"
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker network create --subnet=172.22.0.0/16 mynet123\'"
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run --net mynet123 --ip 172.22.0.22 -d -p 3308:3306 $mysqlImage:$versionNumber.$BUILD_NUMBER\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker build -t mysql_image -f DockerfileMysql .\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run --net mynet123 --ip 172.22.0.22 -d -p 3308:3306 mysql_image\'"
 		  }
 		}
     }
