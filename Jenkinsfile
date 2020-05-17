@@ -46,6 +46,27 @@ pipeline {
 		    sh "docker rmi -f $tomcatImage:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
+		stage('Building Mysql image') {
+		  steps{
+		    script {
+		      dockerMysqlImage = docker.build(mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql .")
+		    }
+		  }
+		}
+		stage('Push Mysql Image to Dockerhub') {
+		  steps{
+		     script {
+		        docker.withRegistry( '', registryCredential ) {
+		        dockerMysqlImage.push()
+		      }
+		    }
+		  }
+		}
+		stage('Remove Unused Mysql image') {
+		  steps{
+		    sh "docker rmi -f $mysqlImage:$versionNumber.$BUILD_NUMBER"
+		  }
+		}
 		stage('Deploy docker image from Dockerhub To Production Server') {
 		  steps{
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker stop \$(sudo docker ps -a -q) || true && sudo docker rm \$(sudo docker ps -a -q) || true\'"
