@@ -2,9 +2,11 @@ pipeline {
 	environment {
 		prodServer = 'ec2-15-161-61-125.eu-south-1.compute.amazonaws.com'
 		tomcatImage = "kargyris/mytomcat"
+		mysqlImage = "kargyris/mymysql"
 		registryCredential = 'dockerhub'
 		versionNumber = 2
-		dockerImage = ''
+		dockerTomcatImage = ''
+		dockerMysqlImage = ''
 	}
     agent any
     stages {
@@ -23,37 +25,11 @@ pipeline {
                 sh 'docker system prune -a -f';
             }
         }
-		stage('Building image') {
+		stage('Building Mysql image') {
 		  steps{
 		    script {
-		      dockerImage = docker.build tomcatImage + ":$versionNumber.$BUILD_NUMBER"
+		      dockerMysqlImage = docker.build(mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql")
 		    }
-		  }
-		}
-		stage('Push Image to Dockerhub') {
-		  steps{
-		     script {
-		        docker.withRegistry( '', registryCredential ) {
-		        dockerImage.push()
-		      }
-		    }
-		  }
-		}
-		stage('Remove Unused docker image') {
-		  steps{
-		    sh "docker rmi -f $tomcatImage:$versionNumber.$BUILD_NUMBER"
-		  }
-		}
-		stage('Deploy docker image from Dockerhub To Production Server') {
-		  steps{
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker stop \$(sudo docker ps -a -q) || true && sudo docker rm \$(sudo docker ps -a -q) || true\'"
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker system prune -a -f\'"
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run -d -p 8088:8080 $tomcatImage:$versionNumber.$BUILD_NUMBER\'"
-		  }
-		}
-		stage('Running Mysql To Production Server') {
-		  steps{
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker-compose up -d\'"
 		  }
 		}
     }
