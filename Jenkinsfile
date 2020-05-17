@@ -23,12 +23,13 @@ pipeline {
         stage('Remove Containers, Images etc') {
             steps {
                 sh 'docker system prune -a -f';
+                sh 'killall mysqld';
             }
         }
 		stage('Building Mysql image') {
 		  steps{
 		    script {
-		      dockerMysqlImage = docker.build(mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql .")
+		      dockerMysqlImage = docker.build(mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql")
 		    }
 		  }
 		}
