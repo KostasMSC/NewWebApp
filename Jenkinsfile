@@ -12,7 +12,7 @@ pipeline {
     stages {
         stage ('Git-checkout') {
             steps {
-				sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer sudo docker rmi $(sudo docker images | grep mytomcat | tr -s ' ' | cut -d ' ' -f 3)"
+				sh 'sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer sudo docker rmi \$(sudo docker images | grep mytomcat | tr -s " " | cut -d " " -f 3)'
 		  }
 		}
     }
