@@ -23,7 +23,6 @@ pipeline {
         stage('Remove Containers, Images etc') {
             steps {
                 sh 'docker system prune -a -f';
-                sh 'killall mysqld';
             }
         }
 		stage('Building Mysql image') {
