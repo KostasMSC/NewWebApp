@@ -22,7 +22,9 @@ pipeline {
         }
 		stage('Building Mysql image') {
 		  steps{
-                sh 'sudo docker build -t $mysqlImage":$versionNumber.$BUILD_NUMBER" -f DockerfileMysql .';
+		    script {
+		      dockerMysqlImage = docker.build(mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql .")
+		    }
 		  }
 		}
     }
