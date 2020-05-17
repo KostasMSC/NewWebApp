@@ -23,8 +23,22 @@ pipeline {
 		stage('Building Mysql image') {
 		  steps{
 		    script {
-		      dockerMysqlImage = docker.build(mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql .")
+		      dockerMysqlImage = docker.build($mysqlImage + ":$versionNumber.$BUILD_NUMBER","-f DockerfileMysql .")
 		    }
+		  }
+		}
+		stage('Push Tomcat Image to Dockerhub') {
+		  steps{
+		     script {
+		        docker.withRegistry( '', registryCredential ) {
+		        dockerMysqlImage.push()
+		      }
+		    }
+		  }
+		}
+		stage('Remove Unused Tomcat image') {
+		  steps{
+		    sh "docker rmi -f $mysqlImage:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
     }
