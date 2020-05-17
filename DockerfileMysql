@@ -1,0 +1,19 @@
+FROM ubuntu:18.04
+ 
+RUN apt-get -y update
+RUN apt-get -y upgrade
+RUN apt-get install -y mysql-server
+
+COPY ./mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
+
+# It doesn't seem needed since I'll use -p, but it can't hurt
+EXPOSE 3306
+
+RUN /etc/init.d/mysql start && mysql -uroot -e "CREATE DATABASE IF NOT EXISTS PAGE_VISITS;" && \
+    mysql -uroot -e "USE PAGE_VISITS;" && \
+	mysql -uroot -e "CREATE TABLE IF NOT EXISTS PAGE_VISITS.PAGE_VISITS ( id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, SHAPE VARCHAR(32), TS TIMESTAMP ) AUTO_INCREMENT=1;" && \
+    mysql -uroot -e "CREATE USER 'root'@'%' IDENTIFIED BY 'helloworld';" && \
+    mysql -uroot -e "GRANT ALL PRIVILEGES ON PAGE_VISITS.* TO 'root'@'%';" && \
+	mysql -uroot -e "FLUSH PRIVILEGES;"
+
+CMD /etc/init.d/mysql start && tail -F /var/log/mysql.log
