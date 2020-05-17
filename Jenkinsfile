@@ -71,7 +71,7 @@ pipeline {
 		}
 		stage('Running Mysql To Production Server') {
 		  steps{
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker-compose up -d\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run -d -p 3308:3306 $mysqlImage:$versionNumber.$BUILD_NUMBER\'"
 		  }
 		}
     }
