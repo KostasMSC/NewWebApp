@@ -1,7 +1,7 @@
 pipeline {
 	environment {
 		prodServer = 'ec2-15-161-61-125.eu-south-1.compute.amazonaws.com'
-		registry = "kargyris/mytomcat"
+		tomcatImage = "kargyris/mytomcat"
 		registryCredential = 'dockerhub'
 		versionNumber = 2
 		dockerImage = ''
@@ -11,7 +11,6 @@ pipeline {
         stage ('Git-checkout') {
             steps {
                 echo "Checking out from git repository.";
-                sh 'pwd';
             }
         }
         stage('Maven Build') {
@@ -27,7 +26,7 @@ pipeline {
 		stage('Building image') {
 		  steps{
 		    script {
-		      dockerImage = docker.build registry + ":$versionNumber.$BUILD_NUMBER"
+		      dockerImage = docker.build tomcatImage + ":$versionNumber.$BUILD_NUMBER"
 		    }
 		  }
 		}
@@ -42,14 +41,14 @@ pipeline {
 		}
 		stage('Remove Unused docker image') {
 		  steps{
-		    sh "docker rmi -f $registry:$versionNumber.$BUILD_NUMBER"
+		    sh "docker rmi -f $tomcatImage:$versionNumber.$BUILD_NUMBER"
 		  }
 		}
 		stage('Deploy docker image from Dockerhub To Production Server') {
 		  steps{
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker stop \$(sudo docker ps -a -q) || true && sudo docker rm \$(sudo docker ps -a -q) || true\'"
 		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker system prune -a -f\'"
-		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run -d -p 8088:8080 $registry:$versionNumber.$BUILD_NUMBER\'"
+		    sh "sudo ssh -oIdentityFile=/home/ubuntu/.ssh/ProdServer.pem ubuntu@$prodServer \'sudo docker run -d -p 8088:8080 $tomcatImage:$versionNumber.$BUILD_NUMBER\'"
 		  }
 		}
 		stage('Running Mysql To Production Server') {
