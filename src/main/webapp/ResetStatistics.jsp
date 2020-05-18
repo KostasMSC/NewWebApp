@@ -9,13 +9,15 @@
 </head>
 <body>
 	<%
-out.println("You can view Reset Statistics here!");
+
+out.println("Your Statistics are reset to zero!");
 
 Connection conn;
 
 try {
 	// obtain a connection to the DB, use DB driver, URL, credentials
-	String connURL = "jdbc:mysql://172.18.0.1:3308/PAGE_VISITS";
+
+	String connURL = "jdbc:mysql://172.22.0.1:3308/PAGE_VISITS";
 	Class.forName("com.mysql.jdbc.Driver").newInstance();
 	conn = DriverManager.getConnection(connURL, "root", "helloworld");
 
@@ -23,8 +25,8 @@ try {
 	 * reset the DB
 	 */
 	Statement stmt0 = conn.createStatement();
-	stmt0.executeUpdate("TRUNCATE TABLE PAGE_VISITS");
-    
+
+	stmt0.executeUpdate("TRUNCATE PAGE_VISITS");
 
 	/*
 	 * release resources

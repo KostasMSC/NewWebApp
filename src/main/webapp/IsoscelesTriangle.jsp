@@ -21,6 +21,7 @@
 	<jsp:include page='InsertShapes.jsp'>
 	    <jsp:param name="shapeName" value="<%=this.getClass().getSimpleName().replaceFirst(\"_jsp\", \"\")%>" />
 	</jsp:include>
+
 </font>
 </body>
 </html>

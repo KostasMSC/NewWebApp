@@ -7,6 +7,7 @@
 <title>Circle</title>
 </head>
 <body bgcolor="FEF9E7">
+
 <font face="verdana">
 	<h1>Hello!</h1>
 
@@ -21,6 +22,8 @@
 	<jsp:include page='InsertShapes.jsp'>
 	    <jsp:param name="shapeName" value="<%=this.getClass().getSimpleName().replaceFirst(\"_jsp\", \"\")%>" />
 	</jsp:include>
+
 </font>
+
 </body>
 </html>
