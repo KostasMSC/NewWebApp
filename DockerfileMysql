@@ -4,11 +4,13 @@ RUN apt-get -y update
 RUN apt-get -y upgrade
 RUN apt-get install -y mysql-server
 
+# solves some bind_address issues
 COPY ./mysqld.cnf /etc/mysql/mysql.conf.d/mysqld.cnf
 COPY ./mysqld.cnf /etc/mysql/mysql.cnf
 
 EXPOSE 3306
 
+# initial db creation
 RUN /etc/init.d/mysql start && mysql -uroot -e "CREATE DATABASE IF NOT EXISTS PAGE_VISITS;" && \
     mysql -uroot -e "USE PAGE_VISITS;" && \
 	mysql -uroot -e "CREATE TABLE IF NOT EXISTS PAGE_VISITS.PAGE_VISITS ( id INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY, SHAPE VARCHAR(32), TS TIMESTAMP ) AUTO_INCREMENT=1;" && \
