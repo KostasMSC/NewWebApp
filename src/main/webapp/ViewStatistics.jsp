@@ -13,11 +13,10 @@
 Connection conn;
 
 try {
-	
+
 	// obtain a connection to the DB, use DB driver, URL, credentials
 	String connURL = "jdbc:mysql://172.22.0.1:3308/PAGE_VISITS";
 	Class.forName("com.mysql.jdbc.Driver").newInstance();
-	//conn = DriverManager.getConnection(connURL, "exercise1", "exEr(1se$");
 	conn = DriverManager.getConnection(connURL, "root", "helloworld");
 	
 	Statement stmt0 = conn.createStatement();
@@ -66,4 +65,5 @@ try {
 %>
 
 </body>
+
 </html>

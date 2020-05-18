@@ -11,12 +11,15 @@
 	<h1>Hello!</h1>
 
 	<p>
-	<p>This is a <font color="red">Rhombus</font>.
+
+	<p>This is a <font color="red"><strike>Green</strike>Red Rhombus</font>.
 	<p>
 	<p>
-	<svg height="150" width="150" xmlns="http://www.w3.org/2000/svg">
-	  <polygon points="0,-50 -50,0 0,50 50,0" 
-	  	style="fill:red;stroke:black;stroke-width:1" transform="translate(100 100)" />
+	<svg width="200" height="100" xmlns="http://www.w3.org/2000/svg">
+  		<polygon 
+  			points="100,0 200,50 100,100 0,50" 
+  			style="fill:red;stroke:black;stroke-width:1" 
+  		/>
 	</svg>
 	<jsp:include page='InsertShapes.jsp'>
 	    <jsp:param name="shapeName" value="<%=this.getClass().getSimpleName().replaceFirst(\"_jsp\", \"\")%>" />

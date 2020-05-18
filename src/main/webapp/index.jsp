@@ -27,12 +27,14 @@
         <li><a href="IsoscelesTrapezoid.jsp">Isosceles Trapezoid</a></li>
         <li><a href="IsoscelesTriangle.jsp">Isosceles Triangle</a></li>
         <li><a href="EquilateralTriangle.jsp">Equilateral Triangle</a></li>
-        <li><a href="Square.jsp">Square<a></li>
+        <li><a href="Square.jsp">Square</a></li>
         <li><a href="Pentagon.jsp">Pentagon</a></li>
         <li><a href="Hexagon.jsp">Hexagon</a></li>
         <li><a href="Rhombus.jsp">Rhombus</a></li>
-        <li><a href="ResetStatistics.jsp">Reset Statistics</a></li>
+        <li><a href="Octagon.jsp">Octagon</a></li>
+        <li><a href="Parallelogram.jsp">Parallelogram</a></li>
         <li><a href="ViewStatistics.jsp">View Statistics</a></li>
+		<li><a href="ResetStatistics.jsp">Reset Statistics</a></li>
     </ol>
     <br>
 	<br>
@@ -49,4 +51,3 @@
 	</font>
 </body>
 </html>
-
